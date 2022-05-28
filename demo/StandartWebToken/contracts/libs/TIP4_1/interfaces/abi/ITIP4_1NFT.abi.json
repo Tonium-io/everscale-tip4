@@ -1,86 +1,8 @@
 {
 	"ABI version": 2,
 	"version": "2.2",
-	"header": ["pubkey", "time", "expire"],
+        "header": ["pubkey", "time", "expire"],
 	"functions": [
-		{
-			"name": "constructor",
-			"inputs": [
-				{"name":"owner","type":"address"},
-				{"name":"sendGasTo","type":"address"},
-				{"name":"remainOnNft","type":"uint128"},
-				{"name":"json","type":"string"},
-				{"name":"indexDeployValue","type":"uint128"},
-				{"name":"indexDestroyValue","type":"uint128"},
-				{"name":"codeIndex","type":"cell"},
-				{"name":"storageAddr","type":"address"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "burn",
-			"inputs": [
-				{"name":"dest","type":"address"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "onStorageFillComplete",
-			"inputs": [
-				{"name":"gasReceiver","type":"address"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "getStorage",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"addr","type":"address"}
-			]
-		},
-		{
-			"name": "indexCode",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"code","type":"cell"}
-			]
-		},
-		{
-			"name": "indexCodeHash",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"hash","type":"uint256"}
-			]
-		},
-		{
-			"name": "resolveIndex",
-			"inputs": [
-				{"name":"answerId","type":"uint32"},
-				{"name":"collection","type":"address"},
-				{"name":"owner","type":"address"}
-			],
-			"outputs": [
-				{"name":"index","type":"address"}
-			]
-		},
-		{
-			"name": "getJson",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"json","type":"string"}
-			]
-		},
 		{
 			"name": "transfer",
 			"inputs": [
@@ -121,16 +43,6 @@
 				{"name":"owner","type":"address"},
 				{"name":"manager","type":"address"},
 				{"name":"collection","type":"address"}
-			]
-		},
-		{
-			"name": "supportsInterface",
-			"inputs": [
-				{"name":"answerId","type":"uint32"},
-				{"name":"interfaceID","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"value0","type":"bool"}
 			]
 		}
 	],
@@ -183,16 +95,9 @@
 		{"name":"_pubkey","type":"uint256"},
 		{"name":"_timestamp","type":"uint64"},
 		{"name":"_constructorFlag","type":"bool"},
-		{"name":"_supportedInterfaces","type":"optional(cell)"},
 		{"name":"_id","type":"uint256"},
 		{"name":"_collection","type":"address"},
 		{"name":"_owner","type":"address"},
-		{"name":"_manager","type":"address"},
-		{"name":"_json","type":"string"},
-		{"name":"_indexDeployValue","type":"uint128"},
-		{"name":"_indexDestroyValue","type":"uint128"},
-		{"name":"_codeIndex","type":"cell"},
-		{"name":"_storage","type":"address"},
-		{"name":"_active","type":"bool"}
+		{"name":"_manager","type":"address"}
 	]
 }

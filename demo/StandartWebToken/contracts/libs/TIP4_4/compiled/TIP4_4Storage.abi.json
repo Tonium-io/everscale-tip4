@@ -1,0 +1,56 @@
+{
+	"ABI version": 2,
+	"version": "2.2",
+	"header": ["time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+				{"name":"uploaderPubkey","type":"uint256"},
+				{"name":"mimeType","type":"string"},
+				{"name":"chunksNums","type":"uint32"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "fill",
+			"inputs": [
+				{"name":"id","type":"uint32"},
+				{"name":"chunk","type":"bytes"},
+				{"name":"gasReceiver","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getInfo",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"nft","type":"address"},
+				{"name":"collection","type":"address"},
+				{"name":"mimeType","type":"string"},
+				{"name":"content","type":"map(uint32,bytes)"}
+			]
+		}
+	],
+	"data": [
+		{"key":1,"name":"_nft","type":"address"}
+	],
+	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"name":"_mimeType","type":"string"},
+		{"name":"_nft","type":"address"},
+		{"name":"_collection","type":"address"},
+		{"name":"_uploaderPubkey","type":"uint256"},
+		{"name":"_chunksNums","type":"uint32"},
+		{"name":"_uploaded","type":"uint32"},
+		{"name":"messages","type":"map(uint256,uint32)"},
+		{"name":"_content","type":"map(uint32,bytes)"}
+	]
+}

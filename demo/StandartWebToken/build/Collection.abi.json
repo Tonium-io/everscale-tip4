@@ -9,6 +9,7 @@
 				{"name":"codeNft","type":"cell"},
 				{"name":"codeIndex","type":"cell"},
 				{"name":"codeIndexBasis","type":"cell"},
+				{"name":"codeStorage","type":"cell"},
 				{"name":"ownerPubkey","type":"uint256"},
 				{"name":"json","type":"string"},
 				{"name":"mintingFee","type":"uint128"}
@@ -19,7 +20,10 @@
 		{
 			"name": "mintNft",
 			"inputs": [
-				{"name":"json","type":"string"}
+				{"name":"json","type":"string"},
+				{"name":"uploader","type":"uint256"},
+				{"name":"mimeType","type":"string"},
+				{"name":"chunksNum","type":"uint32"}
 			],
 			"outputs": [
 			]
@@ -83,6 +87,34 @@
 				{"name":"newOwner","type":"uint256"}
 			],
 			"outputs": [
+			]
+		},
+		{
+			"name": "storageCode",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"code","type":"cell"}
+			]
+		},
+		{
+			"name": "storageCodeHash",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"codeHash","type":"uint256"}
+			]
+		},
+		{
+			"name": "resolveStorage",
+			"inputs": [
+				{"name":"answerId","type":"uint32"},
+				{"name":"nft","type":"address"}
+			],
+			"outputs": [
+				{"name":"value0","type":"address"}
 			]
 		},
 		{
@@ -236,6 +268,8 @@
 		{"name":"_indexDeployValue","type":"uint128"},
 		{"name":"_indexDestroyValue","type":"uint128"},
 		{"name":"_deployIndexBasisValue","type":"uint128"},
+		{"name":"_codeStorage","type":"cell"},
+		{"name":"_storageDeployValue","type":"uint128"},
 		{"name":"_owner","type":"uint256"},
 		{"name":"_remainOnNft","type":"uint128"},
 		{"name":"_lastTokenId","type":"uint128"},

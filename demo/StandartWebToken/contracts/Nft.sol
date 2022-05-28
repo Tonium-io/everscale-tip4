@@ -7,13 +7,14 @@ pragma AbiHeader time;
 pragma AbiHeader pubkey;
 
 
-import '@itgold/everscale-tip/contracts/TIP4_1/TIP4_1Nft.sol';
-import '@itgold/everscale-tip/contracts/TIP4_2/TIP4_2Nft.sol';
-import '@itgold/everscale-tip/contracts/TIP4_3/TIP4_3Nft.sol';
+import 'libs/TIP4_1/TIP4_1Nft.sol';
+import 'libs/TIP4_2/TIP4_2Nft.sol';
+import 'libs/TIP4_3/TIP4_3Nft.sol';
+import 'libs/TIP4_4/TIP4_4Nft.sol';
 import './interfaces/ITokenBurned.sol';
 
 
-contract Nft is TIP4_1Nft, TIP4_2Nft, TIP4_3Nft {
+contract Nft is TIP4_2Nft, TIP4_3Nft, TIP4_4Nft {
 
     constructor(
         address owner,
@@ -22,7 +23,8 @@ contract Nft is TIP4_1Nft, TIP4_2Nft, TIP4_3Nft {
         string json,
         uint128 indexDeployValue,
         uint128 indexDestroyValue,
-        TvmCell codeIndex
+        TvmCell codeIndex,
+        address storageAddr
     ) TIP4_1Nft(
         owner,
         sendGasTo,
@@ -33,6 +35,8 @@ contract Nft is TIP4_1Nft, TIP4_2Nft, TIP4_3Nft {
         indexDeployValue,
         indexDestroyValue,
         codeIndex
+    ) TIP4_4Nft (
+        storageAddr
     ) public {
         tvm.accept();
     }

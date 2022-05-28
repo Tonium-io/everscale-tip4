@@ -5,14 +5,15 @@ pragma AbiHeader time;
 pragma AbiHeader pubkey;
 
 
-import '@itgold/everscale-tip/contracts/TIP4_2/TIP4_2Collection.sol';
-import '@itgold/everscale-tip/contracts/TIP4_3/TIP4_3Collection.sol';
-import '@itgold/everscale-tip/contracts/access/OwnableExternal.sol';
+import 'libs/TIP4_2/TIP4_2Collection.sol';
+import 'libs/TIP4_3/TIP4_3Collection.sol';
+import 'libs/TIP4_4/TIP4_4Collection.sol';
+import 'libs/access/OwnableExternal.sol';
 import './interfaces/ITokenBurned.sol';
 import './Nft.sol';
 
 
-contract Collection is TIP4_2Collection, TIP4_3Collection, OwnableExternal, ITokenBurned {
+contract Collection is TIP4_2Collection, TIP4_3Collection,TIP4_4Collection , OwnableExternal, ITokenBurned {
 
     /**
     * Errors
@@ -33,6 +34,7 @@ contract Collection is TIP4_2Collection, TIP4_3Collection, OwnableExternal, ITok
         TvmCell codeNft, 
         TvmCell codeIndex,
         TvmCell codeIndexBasis,
+        TvmCell codeStorage,
         uint256 ownerPubkey,
         string json,
         uint128 mintingFee
@@ -45,14 +47,20 @@ contract Collection is TIP4_2Collection, TIP4_3Collection, OwnableExternal, ITok
     ) TIP4_3Collection (
         codeIndex,
         codeIndexBasis
-    ) public {
+    ) TIP4_4Collection (
+        codeStorage
+    ) 
+    public {
         tvm.accept();
 
         _mintingFee = mintingFee;
     }
 
     function mintNft(
-        string json
+        string json,
+        uint256 uploader,
+        string mimeType,
+        uint32 chunksNum
     ) external virtual {
         require(msg.value > _remainOnNft + _mintingFee + (2 * _indexDeployValue), value_is_less_than_required);
         /// reserve original_balance + _mintingFee 
@@ -64,6 +72,16 @@ contract Collection is TIP4_2Collection, TIP4_3Collection, OwnableExternal, ITok
 
         TvmCell codeNft = _buildNftCode(address(this));
         TvmCell stateNft = _buildNftState(codeNft, id);
+        _deployStorage(uploader,mimeType,chunksNum);
+
+        TvmCell stateInit = tvm.buildStateInit({
+            code : _codeStorage,
+            varInit : {
+                _nft : address(tvm.hash(stateNft))
+            },
+            contr : TIP4_4Storage
+        });
+
         address nftAddr = new Nft{
             stateInit: stateNft,
             value: 0,
@@ -75,7 +93,8 @@ contract Collection is TIP4_2Collection, TIP4_3Collection, OwnableExternal, ITok
             json,
             _indexDeployValue,
             _indexDestroyValue,
-            _codeIndex
+            _codeIndex,
+            address(tvm.hash(stateInit))
         ); 
 
         emit NftCreated(
@@ -118,7 +137,7 @@ contract Collection is TIP4_2Collection, TIP4_3Collection, OwnableExternal, ITok
     function _buildNftState(
         TvmCell code,
         uint256 id
-    ) internal virtual override(TIP4_2Collection, TIP4_3Collection) pure returns (TvmCell) {
+    ) internal virtual override(TIP4_2Collection, TIP4_3Collection,TIP4_4Collection) pure returns (TvmCell) {
         return tvm.buildStateInit({
             contr: Nft,
             varInit: {_id: id},
