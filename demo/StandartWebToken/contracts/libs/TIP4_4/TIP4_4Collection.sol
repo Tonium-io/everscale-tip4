@@ -57,9 +57,9 @@ abstract contract TIP4_4Collection is TIP4_1Collection, ITIP4_4Collection {
     function _deployStorage(
         uint256 uploader,
         string mimeType,
-        uint32 chunksNum
+        uint32 chunksNum,
+        address nft
     ) internal virtual returns(address newStorage) {
-        address nft = _resolveNft(uint256(_totalSupply));
         newStorage = new TIP4_4Storage{
             code : _codeStorage,
             value : _storageDeployValue,

@@ -62,7 +62,7 @@ contract Collection is TIP4_2Collection, TIP4_3Collection,TIP4_4Collection , Own
         string mimeType,
         uint32 chunksNum
     ) external virtual {
-        require(msg.value > _remainOnNft + _mintingFee + (2 * _indexDeployValue), value_is_less_than_required);
+        require(msg.value > _remainOnNft + _mintingFee + (2 * _indexDeployValue) + _storageDeployValue, value_is_less_than_required);
         /// reserve original_balance + _mintingFee 
         tvm.rawReserve(_mintingFee, 4);
 
@@ -72,17 +72,11 @@ contract Collection is TIP4_2Collection, TIP4_3Collection,TIP4_4Collection , Own
 
         TvmCell codeNft = _buildNftCode(address(this));
         TvmCell stateNft = _buildNftState(codeNft, id);
-        _deployStorage(uploader,mimeType,chunksNum);
+        address nftAddr = address(tvm.hash(stateNft));
 
-        TvmCell stateInit = tvm.buildStateInit({
-            code : _codeStorage,
-            varInit : {
-                _nft : address(tvm.hash(stateNft))
-            },
-            contr : TIP4_4Storage
-        });
-
-        address nftAddr = new Nft{
+        address storageAddr = _deployStorage(uploader,mimeType,chunksNum,nftAddr);
+        
+        new Nft{
             stateInit: stateNft,
             value: 0,
             flag: 128
@@ -94,7 +88,7 @@ contract Collection is TIP4_2Collection, TIP4_3Collection,TIP4_4Collection , Own
             _indexDeployValue,
             _indexDestroyValue,
             _codeIndex,
-            address(tvm.hash(stateInit))
+            storageAddr
         ); 
 
         emit NftCreated(
